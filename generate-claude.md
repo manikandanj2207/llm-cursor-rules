@@ -115,20 +115,20 @@ Use clear RFC-2119 language with emphasis:
 ## Core Commands
 
 ### Development
-- `pnpm dev` - Start all development servers
-- `pnpm build` - Build all packages
-- `pnpm test` - Run all tests
-- `pnpm typecheck` - TypeScript validation across project
-- `pnpm lint` - ESLint all code
-- `pnpm lint:fix` - Auto-fix linting issues
+- `bun dev` - Start all development servers
+- `bun build` - Build all packages
+- `bun test` - Run all tests
+- `bun typecheck` - TypeScript validation across project
+- `bun lint` - ESLint all code
+- `bun lint:fix` - Auto-fix linting issues
 
 ### Package-Specific
-- `pnpm --filter @repo/web [command]` - Run command in web package
-- `pnpm --filter @repo/api [command]` - Run command in API package
+- `bun --filter @repo/web [command]` - Run command in web package
+- `bun --filter @repo/api [command]` - Run command in API package
 
 ### Quality Gates (run before PR)
 ```bash
-pnpm typecheck && pnpm lint && pnpm test
+bun typecheck && bun lint && bun test
 ```
 ```
 
@@ -183,10 +183,10 @@ rg -n "^export (type|interface)" packages/shared/src
 ### Dependency Analysis
 ```bash
 # Check package dependencies
-pnpm why <package-name>
+bun why <package-name>
 
 # Find unused dependencies
-npx depcheck
+bunx depcheck
 ```
 ```
 
@@ -233,7 +233,7 @@ npx depcheck
 ## Available Tools
 
 You have access to:
-- Standard bash tools (rg, git, node, pnpm, etc.)
+- Standard bash tools (rg, git, node, bun, etc.)
 - GitHub CLI (`gh`) for issues, PRs, releases
 - Database CLI (based on project needs)
 - [List any MCP servers configured]
@@ -284,23 +284,23 @@ For EACH major package/directory, create a **detailed CLAUDE.md** (100-200 lines
 ### This Package
 ```bash
 # From package directory
-pnpm dev          # Start dev server
-pnpm build        # Build for production
-pnpm test         # Run tests
-pnpm test:watch   # Watch mode
-pnpm typecheck    # Type checking
-pnpm lint         # Lint code
+bun dev          # Start dev server
+bun build        # Build for production
+bun test         # Run tests
+bun test:watch   # Watch mode
+bun typecheck    # Type checking
+bun lint         # Lint code
 ```
 
 ### From Root
 ```bash
-pnpm --filter @repo/package-name dev
-pnpm --filter @repo/package-name test
+bun --filter @repo/package-name dev
+bun --filter @repo/package-name test
 ```
 
 ### Pre-PR Checklist
 ```bash
-pnpm typecheck && pnpm lint && pnpm test && pnpm build
+bun typecheck && bun lint && bun test && bun build
 ```
 ```
 
@@ -462,16 +462,16 @@ rg -n "style=" src/
 ### Running Tests
 ```bash
 # Run all tests
-pnpm test
+bun test
 
 # Run specific file
-pnpm test src/components/Button/Button.test.tsx
+bun test src/components/Button/Button.test.tsx
 
 # Watch mode
-pnpm test:watch
+bun test:watch
 
 # Coverage
-pnpm test:coverage
+bun test:coverage
 ```
 ```
 
@@ -481,10 +481,10 @@ pnpm test:coverage
 
 Run this command before creating a PR:
 ```bash
-pnpm --filter @repo/package typecheck && \
-pnpm --filter @repo/package lint && \
-pnpm --filter @repo/package test && \
-pnpm --filter @repo/package build
+bun --filter @repo/package typecheck && \
+bun --filter @repo/package lint && \
+bun --filter @repo/package test && \
+bun --filter @repo/package build
 ```
 
 All checks must pass + manual testing complete.
@@ -533,7 +533,7 @@ All checks must pass + manual testing complete.
         "hooks": [
           {
             "type": "command",
-            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.test\\.(ts|tsx)$ ]]; then pnpm test \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true; fi"
+            "command": "if [[ \"$CLAUDE_FILE_PATHS\" =~ \\.test\\.(ts|tsx)$ ]]; then bun test \"$CLAUDE_FILE_PATHS\" 2>/dev/null || true; fi"
           }
         ]
       }
@@ -583,11 +583,11 @@ Remember to follow our testing and code quality standards.
 ```markdown
 Create a database migration: $ARGUMENTS
 
-1. Create migration file: `pnpm db:migration:create "$ARGUMENTS"`
+1. Create migration file: `bun db:migration:create "$ARGUMENTS"`
 2. Write migration up/down in generated file
 3. Review migration for safety (no data loss)
-4. Test migration: `pnpm db:migrate`
-5. Verify schema changes: `pnpm db:schema:inspect`
+4. Test migration: `bun db:migrate`
+5. Verify schema changes: `bun db:schema:inspect`
 6. Run tests to ensure compatibility
 7. Document breaking changes if any
 8. Commit migration file
@@ -605,13 +605,13 @@ Based on the project, recommend MCP servers:
 ### For This Project
 ```bash
 # GitHub integration (issues, PRs, repos)
-claude mcp add --scope user github -- npx -y @modelcontextprotocol/server-github
+claude mcp add --scope user github -- bunx @modelcontextprotocol/server-github
 
 # Web search and documentation
-claude mcp add --scope user context7 -- npx -y context7-mcp
+claude mcp add --scope user context7 -- bunx context7-mcp
 
 # Sequential thinking for complex decisions
-claude mcp add --scope user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking
+claude mcp add --scope user sequential-thinking -- bunx @modelcontextprotocol/server-sequential-thinking
 ```
 
 ### Project-Specific `.mcp.json`
@@ -621,8 +621,8 @@ Create this file in project root (commit to git):
   "mcpServers": {
     "github": {
       "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "command": "bunx",
+      "args": ["@modelcontextprotocol/server-github"],
       "env": {
         "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
       }
